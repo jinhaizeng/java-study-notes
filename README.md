@@ -38,6 +38,7 @@ public class xxx{
     3.尽量简单，见名知意
 * 类的命名规则
     满足Pascal命名法规范：组成类名的单词的首字母总是要大写的
+* 方法名命名规则和变量名命名规则一致
 定义变量以后要初始化
 `print`为不换行输出，`println`是换行输出
 `println()`可以直接表示换行或者也可以`print('\n')`
@@ -130,6 +131,86 @@ for(int n:arr)                  //作用：把arr数组中的每一个元素拿�
 ### 冒泡排序（略，不会自行百度）
 
 ### java方法
+```java
+Scanner sc = new Scanner(System.in);
+sc.nextInt();   //Scanner为类，定义的sc为对象，.nextIn()方法
+```
+#### 方法的声明和调用
+语法格式
+```java
+/*
+访问修饰符 返回类型 方法名（参数列表）{
+    方法体
+}
+*/
+//举例
+public static void main(String[] args){
+    System.out.println("Hello,immoc!");
+}
+```
+**tips**
+* 方法在类的内部定义
+* 方法不能嵌套定义，即不能在一个方法里再定义一个方法
+
+**方法的分类**
+* 无参无返回值方法
+示例程序
+```java
+package com.imooc.method;
+import java.util.Scanner;
+
+public class MethodDemo{
+    //打印输出星号的方法
+    public void printStar(){
+        System.out.println(""*****************);
+    }
+    public static void main(String[] args){
+        //创建一个MethodDemo类的对象myMethodDemo
+        MethodDemo myMethodDemo = new MethodDemo();     //要使用类对应的方法，就要先定义对象
+        //使用对象名.方法名()去调用方法
+        myMethodDemo.printStar();
+        System.out.println("欢迎来到java的世界！");
+        myMethodDemo.printStar();
+    }
+}
+```
+* 无参带返回值方法
+示例程序
+```java
+public class Rectangle{
+    //求长方形面积的方法
+    public int area(){
+        int length = 10;
+        int width = 5;
+        int getArea = length*width;
+        return getArea;
+    }
+    public static void main(String[] args){
+        Rectangle rc = new Rectangle();
+        System.out.pritln("长方形的面积为：”+rc.area());
+    }
+}
+```
+* 有参无返回值方法
+示例程序（只写了方法的定义，其他的都差不多，略）
+```java
+public void max(float a,float b){}
+```
+* 有参有返回值方法
+示例程序（只写了方法的定义，其他的都差不多，略）
+```java
+public int fac(int n){}
+```
+
+#### 数组作为方法参数
+示例程序（只写了方法的定义，其他的都差不多，略）
+```java
+public void printArray(int[] arr){}
+```
+
+#### 方法的重载
+
+
 
 
 
