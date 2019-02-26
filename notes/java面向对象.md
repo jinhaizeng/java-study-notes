@@ -558,3 +558,45 @@ this()和super()只能在同一个构造方法中出现一个
 ## 6.课程小结
 
 # 五、继承（下)
+## 1.Object类
+### 1.1 Object概念
+* Object类是所有类的父类
+* 一个类没有使用`extends`关键字明确标识继承关系，则默认继承Obeject类（包括数组）
+* Java中的每个类都可以使用Object中定义的方法
+* 冷知识：对象.equals(对象)比较的是两个对象的地址是否一样；字符串.equals(字符串)比较的是两个字符串的内容
+
+代码示例
+```java
+Animal one = new Animal("花花",2);
+Animal two = new Animal("花花",2)；
+/*equals：
+* 1. 继承Object中的equals方法时，比较的是两个引用是否指向同一个对象
+* 2. 子类可以通过重写equals方法的形式，改变比较的内容
+*/
+one.equals(two);
+one == two
+//这两个判断是一样的，结果是一致的
+```
+如果要实现这两个对象内容的对比，而不是引用的对比，需要重写（一定注意是重写，不是重载）
+```java
+public boolean equals(Object obj){
+	if(obj == null)		//	此处不判断是否为空，有可能因为传入参数为空导致其他异常——空指针异常
+		return false;
+	Animal temp = (Animal)obj;
+	if(this.getName().equals(temp.getName()) && this.getMonth() == temp.getMonth)
+		return true;
+	else 
+		return false;
+}
+
+//另一种方案，上一种方案必须满足obj可以被强制转换成`Animal`类型，此时，这个equals是对上一个方法的重载，所以上一种方法是不可以省去的，不然会报错。即没有上一种方法的代码，就不能合理的写出下一种方案的代码
+public boolean equals(Animal obj){
+	if(obj == null)
+		return false;
+	Animal temp = (Animal)obj;
+	if(this.getName().equals(temp.getName()) && this.getMonth() == temp.getMonth)
+		return true;
+	else 
+		return false;
+}
+```
