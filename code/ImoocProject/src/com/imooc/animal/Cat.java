@@ -1,4 +1,4 @@
-package com.imooc.cat;
+package com.imooc.animal;
 /**
  * 宠物猫类
  * @author MR Code
@@ -11,6 +11,9 @@ public class Cat {
 	double weight;
 	String species;
 	
+	public Cat() {
+		System.out.println("我是宠物猫~~~");
+	}
 	//成员方法：跑动、吃东西
 	//跑步的方法
 	public void run() {
