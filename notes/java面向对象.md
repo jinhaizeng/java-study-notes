@@ -1,4 +1,5 @@
 [TOC]
+**eclipse中显示提示的快捷键："alt"+"/"**
 # 一、java面向对象
 ## 1.类和对象
 * 类是模子，确定对象将会拥有的特征（属性）和行为（方法）
@@ -480,7 +481,18 @@ class Cat extends Animal{
 	4. 与方法的参数名无关
  * 方法重写
 	1. 有继承关系的子类中
-	2. 方法名相同，参数列表相同（参数顺序、个数、类型），方法返回值相同
+	2. 方法名相同，参数列表相同（参数顺序、个数、类型），方法返回值可以不同（只可以是父类对应的子类,可以向下兼容，但是不可以向上兼容）
+		```java
+		public Animal create(){
+			return new Animal();
+		}
+		public Dog creat(){			//Animal是Dog的父类，不报错
+			return new Dog();
+		}
+		public Object creat(){			//Object是Animal的父类，报错
+			return new Object();
+		}
+		```
 	3. 访问修饰符的访问范围要大于等于父类的访问范围
 	4. 与方法的参数名无关（不强制要求相同）
 
@@ -565,6 +577,7 @@ this()和super()只能在同一个构造方法中出现一个
 * Java中的每个类都可以使用Object中定义的方法
 * 冷知识：对象.equals(对象)比较的是两个对象的地址是否一样；字符串.equals(字符串)比较的是两个字符串的内容
 
+### 1.2 重写euqals
 代码示例
 ```java
 Animal one = new Animal("花花",2);
@@ -600,3 +613,81 @@ public boolean equals(Animal obj){
 		return false;
 }
 ```
+### 1.3 重写toString
+```java
+/*toString测试：
+* 1.输出对象名时，默认会直接调用类中的toString 
+* 2.继承Object中的equals方法时，输出对象的字符串表示形式：类型信息+@+地址信息
+* 3.子类可以通过重写equals方法的形式， 改变输出的内容以及表现形式
+*/
+//重写toString
+public String toString(){
+	return "昵称："+this.getName()+";年龄"+this.getMonth();
+}
+```
+
+**其他Object的方法重写，可以自己试试，不赘述**
+
+## 2.final关键字
+### 2.1final关键字的使用
+1. 在类前面添加：被final修饰的类不能有子类（即绝种了）
+示例代码
+```java
+//final class:该类没有子类 书写顺序可以有：public final class\final public class 
+public final class Animal{
+
+}
+```
+2. 在方法的返回值前面添加： 该类的方法不能被子类重写，但是可以正常被子类继承使用
+```java
+public final void eat(){
+	System.out.println(this.getName()+"在吃东西");
+}
+//此时子类重写父类的方法
+```
+
+3. final修饰方法内的局部变量：只要在具体被使用之前进行赋值即可，一旦赋值不允许被修改
+
+4. final修饰类中成员属性：赋值过程只能在是哪个位置进行赋值，其他位置赋值都是非法的
+	* 定义直接初始化
+	* 构造方法
+	* 构造代码块
+### 2.2数据类型的使用
+* 基本数据类型（直接定义赋值即可）
+	如：int float double ...
+* 引用数据类型（需要创建对象然后对对象进行操作）
+	如: String System 数组
+	`Animal one = new Animal();`
+### 2.3final修饰引用类型
+问题：引用地址是否可以发生改变？属性值是否可以发生改变？
+回答：引用地址不可以发生改变，但是属性值是可以发生改变的
+示例代码
+```java
+final Animal animal = new Animal("凡凡",1);	//Animal是一个定义好的类
+animal = new Animal();	//报错，异常
+animal.month = 12;		//正常
+animal.name = "豆豆";	//正常
+```
+**定义在类中的成员`public static final int temp`，表示temp是一个静态的不允许被修改的成员，他会随着类的加载而产生，在整个类的运行过程中，不允许被修改**
+
+### 2.4final使用方法小结
+1. 修饰类表示不允许被继承
+2. 修饰方法表示不允许被子类重写
+	- final修饰的方法可以被继承
+	- 不能修饰构造方法
+3. 修改变量表示不允许修改
+	- 修饰方法内部的局部变量 》在使用之前被初始化赋值即可
+	- 修饰类中成员变量 》只能在定义时、构造方法、构造代码块中进行
+	- 修饰基本数据类型的变量 》初始赋值滞后不能更改
+	- 引用类型的变量 》 初始化之后不能再指向另一个对象，单对象的内容是可变的
+4. 可配合static使用
+	表示全局的，不可以被修订的内容。可以用`static final`修饰程序中只需要加载一次，不会被修改的内容
+
+## 注解介绍
+重写的快捷方式：`"alt"+"/"`，选中想要重写的内容，可以快速的实现重写
+注解分类：
+1. 源码注解：注解在源码中存在，编译成.class文件就不存在了
+2. 编译时注解：注解在源码和.class文件中都存在
+3. 运行时注解：在运行阶段还起作用，甚至会影响运行逻辑的注解
+
+`@override`重写注解
