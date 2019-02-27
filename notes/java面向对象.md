@@ -1,6 +1,7 @@
 [TOC]
 **eclipse中显示提示的快捷键："alt"+"/"**
 # 一、java面向对象
+**面向对象具有三大特征：封装、继承、多态**
 ## 1.类和对象
 * 类是模子，确定对象将会拥有的特征（属性）和行为（方法）
 * 对象是类的示例表现
@@ -325,6 +326,8 @@ com.imooc.animal.CatTest text = new com.imooc.animal.CatTets();
 * static表示静态，用static修饰的变量被称为静态成员或类成员。static修饰的成员具有这样的特征：无论这个类最终实例化出多少对象，这个成员都会共用同一块静态空间，一个对象的static成员变量的修改会导致其他对象对应的static成员变量也跟着变化（实质：地址相同）
 * 静态成员从类第一次加载时就产生，一直到这个类不再有任何对象被使用，此时空间才会被释放
 * 类对象共用空间 
+* 父类的static方法，是不能被子类重写的
+
 静态成员的两只访问方法：
 1. 可以通过对象名进行访问：对象名.成员
 2. 可以通过类名访问： 类名.成员（推荐使用这种方式），举例：`Cat.price = 2000;`
@@ -481,7 +484,9 @@ class Cat extends Animal{
 	4. 与方法的参数名无关
  * 方法重写
 	1. 有继承关系的子类中
-	2. 方法名相同，参数列表相同（参数顺序、个数、类型），方法返回值可以不同（只可以是父类对应的子类,可以向下兼容，但是不可以向上兼容）
+	2. 方法名相同，参数列表相同（参数顺序、个数、类型）；就是与父类相同
+	3. 方法返回值可以不同（只可以是父类对应的子类,可以向下兼容，但是不可以向上兼容）
+	4. 访问修饰符的限定范围大于等于父类方法
 		```java
 		public Animal create(){
 			return new Animal();
@@ -648,7 +653,7 @@ public final void eat(){
 
 3. final修饰方法内的局部变量：只要在具体被使用之前进行赋值即可，一旦赋值不允许被修改
 
-4. final修饰类中成员属性：赋值过程只能在是哪个位置进行赋值，其他位置赋值都是非法的
+4. final修饰类中成员属性：赋值过程只能在是哪些位置进行赋值，其他位置赋值都是非法的
 	* 定义直接初始化
 	* 构造方法
 	* 构造代码块
@@ -691,3 +696,231 @@ animal.name = "豆豆";	//正常
 3. 运行时注解：在运行阶段还起作用，甚至会影响运行逻辑的注解
 
 `@override`重写注解
+
+
+# 六、单例模式
+设计模式是软件开发人员在软件开发过程中面临的一般问题的解决方案
+设计模式的分类
+1. 创建型模式——关注对象创建过程
+包括工厂法法模式、建造者模式、抽象工厂模式、原型模式、单例模式
+2. 结构型模式——关注类和对象组合
+包括桥接模式、代理模式、享元模式、外观模式、装饰器模式、组合模式、适配器模式
+3. 行为型模式——关注对象间的通信过程
+包括备忘录模式、解释器模式、命令模式、中介者模式、观察者模式、策略模式、状态模式、模板方法模式、访问者模式、迭代子模式、责任链模式
+
+## 1.单例模式
+* 目的：使得类的一个对象称为该类系统中的唯一实例
+* 定义：一个类有且仅有一个实例，并且自行实例化向整个系统提供
+* 要点：
+	1. 某个类只能够一个实例
+	2. 必须自行创建实例
+	3. 必须自行向整个系统提供整个实例
+* 实现
+	1. 只提供**私有**的构造方法
+	2. 含有一个该类的**静态**私有对象
+	3. 提供一个静态的**公有**方法用于创建、获取静态私有对象
+* 代码实现方案
+	1. 饿汉式：对象创建过程中实例化
+	2. 懒汉式：静态公有方法中实例化
+### 1.1饿汉式代码实现（见工程SingletonProj）
+示例代码：
+```java
+package com.imooc.singleton;
+
+//饿汉式：创建对象实例的时候直接初始化
+public class SingletonOne {
+	//1、创建类中私有构造
+	private SingletonOne() {
+		
+	}
+	
+	//2、创建该类型的私有静态实例
+	private static SingletonOne instance = new SingletonOne();
+	
+	//3、创建公有静态方法返回静态实例对象
+	public static SingletonOne getInstance() {
+		return instance;
+	}
+}
+```
+饿汉式特点：创建对象示例的时候直接初始化，空间换时间，加载对象时速度快，但是占用空间大
+
+### 1.2懒汉式的代码实现
+```java
+package com.imooc.singleton;
+//懒汉式：类内实例对象创建时并不直接初始化，指导第一次调用到方法时才完成初始化的才做
+public class SingletonTwo {
+	//1、创建私有构造方法
+	private SingletonTwo() {
+		
+	}
+	//2、创建静态的该类实例对象
+	private static SingletonTwo instance = null;
+	//3、创建开开放的静态方法提供实例对象
+	public static SingletonTwo getInstance() {
+		if(instance == null)
+			instance = new SingletonTwo();
+		
+		return instance;
+	}
+}
+```
+懒汉式：类内实例对象创建时并不直接初始化，指导第一次调用到方法时才完成初始化的才做
+用时间换空间
+饿汉式线程安全、懒汉式存在线程风险
+### 1.3单例模式的特点及适用场景
+* 优点
+	1. 在内存中只有一个对象，节省内存空间
+	2. 避免频繁的创建销毁对象，提高性能
+	3. 避免对共享资源的多重占用
+* 缺点
+	1. 扩展比较困难
+	2. 如果实例化后的对象长期不利用，系统将默认为垃圾进行回收，造成对象状态丢失
+* 使用场景
+	1. 创建对象时占用资源过多，但同时又需要用到该类对象
+	2. 对系统内资源要求统一读写，如读写配置信息
+	3. 当多个示例存在可能引起程序逻辑错误，如号码生成器
+
+# 七、多态
+## 1.多态的概念
+多态：允许不同类的对象对同一消息作出不同的响应 
+多态分类：
+* 编译时多态
+	又叫做设计时多态，通过**方法重载**的方式实现
+* 运行时多态
+	程序运行时动态决定调用哪个方法（提到多态，通常指的是运行时多态）
+
+多态实现的必要条件：
+* 满足继承关系
+* 父类引用指向子类对象
+## 2.向上转型（父类引用指向子类对象）
+`Animal one`是父类引用，`Cat``Dog`是子类对象，`=`相当于父类引用指向子类对象
+以下中`Animal`是其父类，`Cat`和`Dog`是对应父类的子类
+
+```java
+Animal one = new Animal();			//1
+/*向上转型、隐式转型、自动转型
+ * 父类引用指向子类实例，可以调用子类重写父类的方法以及父类派生的方法，无法调用子类独有的方法
+ * 小类转型为大类
+*/
+Animal two = new Cat();				//2
+Animal three = new Dog();			//3
+```
+
+## 3.向下转型（子类引用指向父类对象）
+```java
+/*向下转型、强制类型转换
+ * 子类引用指向父类对象，此处必须进行强转，可以调用子类特有的方法
+ * 必须满足转型条件才能进行转换
+ * 注意：父类中的静态方法无法被子类重写，所以向上转型之后，只能调用到父类原有的静态方法
+ * instanceof运算符:判断左边对象是否满足类型的强转特征
+ */
+ if(two instanceof Cat)
+ {
+	Cat temp = (Cat)two;		//此处two的类型是Animal
+	temp.eat();
+	temp.run();
+	temp.getMonth();
+	System.out.println("two可以转换为Cat类型");
+ }
+
+```
+**instanceof可以提高强转的安全性**
+
+## 4.向上类型转换和向下类型转换的应用
+详细的代码实现见工程`PolyProj`,应用这一问题体现在`Master`
+```java
+public class Master {
+	/*喂宠物
+	 * 喂猫：吃完东西后，主人会带着去玩线球
+	 * 喂狗：吃完东西后，主人会带着去睡觉
+	 * 养兔子、养鹦鹉、养乌龟...
+	 * */
+	//version1 每个宠物都定义一个feed函数，利用重载的方式来实现，但是一定对象多了以后
+	//代码编写会很繁琐
+	public void feed(Cat cat) {
+		cat.eat();
+		cat.palyBall();
+	}
+	public void feed(Dog dog) {
+		dog.eat();
+		dog.sleep();
+	}
+	
+	//version2 可以通过向上转型和向下转型来实现
+	public void feed(Animal obj) {
+		if(obj instanceof Cat) {
+			Cat temp =(Cat) obj;
+			temp.eat();
+			temp.palyBall();
+		}
+		else if(obj instanceof Dog) {
+			Dog temp =(Dog) obj;
+			temp.eat();
+			temp.sleep();
+		}
+	}
+	
+}
+```
+
+[另一个转换的案例](https://pan.baidu.com/play/video#/video?path=%2F%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0%2Fjava%E5%B7%A5%E7%A8%8B%E5%B8%88%2F01.Java%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F%E6%AD%A5%E9%AA%A4%E4%BA%8C%20java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%2F%E4%B8%83%E3%80%81java%E5%A4%9A%E6%80%81%2F3-9%20%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%A1%88%E4%BE%8B%EF%BC%88%E4%B8%8B%EF%BC%89.mp4&t=-1)
+
+这种类型转换用于多态很方便，详情见上面那个视频
+
+## 5.abstract
+### 5.1抽象类
+* java中使用抽象类，限制实例化
+	```java
+	public abstract class Animal(){
+
+	}
+	```
+* 抽象类是不允许实例化的，但是可以通过向上转型，指向子类实例（其子类可以实例化）
+* 应用场景：某个父类只是知道其子类应该包含怎样的方法，但无法准确知道这些子类如何实现这些方法
+* 这个抽象还是要看工程，[网页链接](https://pan.baidu.com/play/video#/video?path=%2F计算机学习%2Fjava工程师%2F01.Java零基础入门%2F步骤二 java面向对象%2F七、java多态%2F3-9 类型转换案例（下）.mp4&t=-1)
+
+### 5.2抽象方法
+抽象方法
+* 不允许包含方法体，只是表示包含这个方法，为了实现不同对象对同一方法的方法重写
+* 子类中必须重写这个抽象方法，子类如果不想重写这个抽象方法，那子类就要被定义成抽象类
+* 包含抽象方法的类一定是抽象类
+### 5.3抽象类存在的意义
+* 在父类中表示这个方法必须存在，方便子类中对这个方法的重写，也保证了子类必须有这个方法
+* static final private不能与abstract并存的
+
+### 5.4 [问题](https://pan.baidu.com/play/video#/video?path=%2F%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E4%B9%A0%2Fjava%E5%B7%A5%E7%A8%8B%E5%B8%88%2F01.Java%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F%E6%AD%A5%E9%AA%A4%E4%BA%8C%20java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%2F%E4%B8%83%E3%80%81java%E5%A4%9A%E6%80%81%2F5-1%20%E9%97%AE%E9%A2%98%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83.mp4&t=11)
+* java中只支持单继承
+* 如何解决一个类型中需要兼容多种类型特征的问题？
+* 以及多个不同类型具有相同特征的问题呢？
+
+## 6.接口
+### 6.1定义
+* 在`new`那一栏以后选择`interface`
+	代码结构
+	```java
+	public interface IPhoto(){
+
+	}
+	```
+* 类实现接口
+	```java
+	public class Camera implements IPhoto{
+		public void photo(){
+
+		}
+	}
+
+	public class FourthPhone extends ThirdPhone implements Iphoto{
+		public void photo(){
+
+		}
+	}
+	```
+* 实现方法（已有接口）
+	```java
+	IPhoto ip = new FourthPhone();
+	ip.photo();
+	ip = new Camera();
+	ip.photo();						//可以用上述两个对象实现photo()这个功能
+	```
