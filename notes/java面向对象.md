@@ -1154,9 +1154,11 @@ Person.Heart myHeart = new Person.Heart();
 ### 7.4方法内部类
 #### 定义
 方法内部类：定义在外部类方法中的内部类，也成局部内部类。
-* 方法内定义的局部变量只能在方法里使用
-* 方法内不能定义静态成员
-* 不能用`public private protected`来修饰
+方法内部类使用规范
+* 定义在方法内部，作用范围也在方法内
+* 和方法内部成员使用规则一样，class前面不可以添加`public private protected static`
+* 类中不能包含静态成员，但是可以包含`final`修饰的最终成员
+* 内部类可以包含抽象方法，但是该内部类要被定义成抽象方法
 实例代码：
 ```java
 public Object getHeart(){
@@ -1187,3 +1189,82 @@ public Object getHeart(){
 	lili.age = 12;
 	System.out.println(lili.getHeart);
 ```
+
+### 7.5匿名内部类
+对某个类的实例只会使用一次，这个类的名字对整个程序而言可有可无。此时可以将类的定义与类的创建，放到一起完成，简化程序的程序。此种方法定义的内部类没有名字，又被叫做匿名内部类
+#### 根据传入的不同的人的类型，调用对应的read方法(详情见`com.imooc.anonymous`)
+* 方案一：（方案一、二中类的成员都有定义）
+	```java
+	public class PersonTest {
+	//根据传入的不同的人的类型，调用对应的read方法
+	//方案1 
+	public void getRead(Man man) {
+		man.read();
+	}
+	public void getRead(Woman woman) {
+		woman.read();
+	}
+	
+	public static void main(String[] args) {
+		PersonTest test = new PersonTest();
+		Man one = new Man();
+		Woman two = new Woman();
+		test.getRead(one);
+		test.getRead(two);
+	}
+	}
+	```
+* 方案二
+	```java
+	public class PersonTest {
+	//根据传入的不同的人的类型，调用对应的read方法
+	//方案2
+	public void getRead(Person person) {
+		person.read();			//由父类与子类的关系可知，根据你传入的类型会
+								//选择你传入类型重写的read方法
+	}
+	
+	public static void main(String[] args) {
+		PersonTest test = new PersonTest();
+		Man one = new Man();
+		Woman two = new Woman();
+		test.getRead(one);
+		test.getRead(two);
+	}
+	}
+	```
+* 方案三：使用匿名内部类的方法
+```java
+	public class PersonTest {
+	//根据传入的不同的人的类型，调用对应的read方法
+	//方案2
+	public void getRead(Person person) {
+		person.read();			//由父类与子类的关系可知，根据你传入的类型会
+								//选择你传入类型重写的read方法
+	}
+	
+	public static void main(String[] args) {
+		PersonTest test = new PersonTest();
+		test.getRead(new Person(){					//用这种方法实现抽象类中抽象方法的重写
+			
+			@override
+			public void read(){
+				System.out.println("男生喜欢读科幻小说");
+			}
+		})；
+		test.getRead(new Person(){					//用这种方法实现抽象类中抽象方法的重写
+			
+			@override
+			public void read(){
+				System.out.println("女生喜欢读言情小说");
+			}
+		})；
+	}
+	```
+匿名内部类：
+1. 匿名内部类没有类型名称、实例对象名称
+2. 编译后的文件命名：外部类$数字.calss 
+3. 无法使用`private public protected abstract static`
+4. 无法编写构造方法（因为没有名字）
+5. 不能出现静态成员
+6. 匿名内部类可以实现接口也可以继承父类，但是不可兼得
