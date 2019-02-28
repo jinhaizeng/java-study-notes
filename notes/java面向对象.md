@@ -1,5 +1,7 @@
 [TOC]
 **eclipse中显示提示的快捷键："alt"+"/"**
+**入门碎知识点**
+1. 成员 = 属性 + 方法
 # 一、java面向对象
 **面向对象具有三大特征：封装、继承、多态**
 ## 1.类和对象
@@ -322,6 +324,9 @@ com.imooc.animal.CatTest text = new com.imooc.animal.CatTets();
 * import 只能加载这个文件内的所有类，子文件夹内的类不会被加载。故`import com.imooc.*`不可能加载所有的类 
 
 ### 3.3static（静态信息）
+**网上看到的小讲解：**
+类的静态成员（静态变量和静态方法）属于类本身，在类加载的时候就会分配内存，可以通过类名直接去访问，非静态成员（非静态变量和非静态方法）属于类的对象，所以只有在类的对象创建（实例化）的时候才会分配内存，然后通过类的对象去访问。
+static关键字的基本作用：方便在没有创建对象的情况下来进行调用（方法/变量）。被static关键字修饰的方法或者变量不需要依赖于对象来进行访问，只要类被加载了，就可以通过类名去进行访问。
 #### 静态成员（static放在成员前面）
 * static表示静态，用static修饰的变量被称为静态成员或类成员。static修饰的成员具有这样的特征：无论这个类最终实例化出多少对象，这个成员都会共用同一块静态空间，一个对象的static成员变量的修改会导致其他对象对应的static成员变量也跟着变化（实质：地址相同）
 * 静态成员从类第一次加载时就产生，一直到这个类不再有任何对象被使用，此时空间才会被释放
@@ -900,7 +905,7 @@ public class Master {
 	代码结构
 	```java
 	public interface IPhoto(){
-
+		public abstract void network();
 	}
 	```
 * 类实现接口
@@ -924,3 +929,261 @@ public class Master {
 	ip = new Camera();
 	ip.photo();						//可以用上述两个对象实现photo()这个功能
 	```
+### 6.2接口成员——抽象方法&常量
+#### 接口定义抽象方法
+* 接口定义了某一批类所需要遵守的规范
+* 接口不关心这些类的内部数据，也不关心这些类里面方法的实现细节，它只规定这些类里必须提供某些方法
+* 接口定义通常以`I`打头
+* 接口访问修饰符只能是`public`或者默认
+* 接口中抽象方法可不写`abstract`关键字，访问修饰符默认`public`
+* 实现接口的类要实现该接口的所有方法，如果不想实现所有的方法，可以将该类定义成`abstract`，即抽象类（抽象类可以只表明这个类有这个功能），这来继承这个抽象类，谁就要实现所有的方法
+* 注意接口和抽象类的一个区别：接口的方法不能有方法体，但是抽象类中的方法是可以有方法体的
+#### 接口定义抽象常量
+* 一般情况下的常量定义`public static final int TEMP = 20;`
+* 接口中可以包含常量，默认会加上`public static final`
+	代码示例
+	```java
+	public interface INet(){
+		int TEMP = 20;
+	}
+	//调用接口中的常量
+	INet.TEMP;		//注意常量不可以被重写赋值
+	```
+#### 接口定义为引用型
+```java
+INet net = new SmartWatch();		//SmartWatch是前面实现接口INet的类，这句话即为：定义一个INet类的对象，引用的空间是SmartWatch()创建的空间
+//这么定义对象，可以通过`net.方法`的方式实现接口中的方法，且只能实现接口中定义的方法
+System.out.println(net.TEMP)		//此时调用的TEMP是接口中定义的TEMP，而不是SmartWatch中定义的TEMP
+```
+
+### 6.3接口成员——默认方法&静态方法
+**接口方法调用也是个小关键**
+* 默认方法（在接口中定义的）
+`default`：默认方法，可以带方法体（其他在接口中定义的方法不能够带方法体）
+在接口中定义如下代码：
+```java
+public interface INet(){
+	int TEMP = 20;
+	default void connection(){
+		System.out.println("我是接口中的默认链接");
+	}
+}
+```
+在接口中定义的默认方法，在继承了该接口的类即使没有定义该方法，也不会报错，因为默认使用了该方法
+* 静态方法
+`static`：静态方法，可以带方法体,同样子类（继承了该接口）没有定义该方法是也不会报错
+
+```java
+public interface INet(){
+	int TEMP = 20;
+	static void stop(){
+		System.out.println("我是接口中的默认链接");
+	}
+}
+```
+* 默认方法和静态方法的区别
+* 默认方法可以通过接口对象调用，静态方法要通过接口名调用
+```java
+INet net = new SmartWatch();
+net.connection();
+INet.stop();
+```
+* 默认方法可以再实现类中重写，并可以通过接口引用调用；静态类不可以再实现类中重写，可以通过接口名调用
+示例代码
+```java
+public void connection(){
+	INet.super.connection();	//并非一定要写的内容，表明调用接口中默认的方法
+}
+```
+`INet.`只能调用接口中的静态成员，`Inet.super.`可以调用接口中的默认成员
+
+### 6.4多接口中重命名默认方法处理的解决方案
+继承多个接口的示例代码
+```java
+public class SmartWatch implements INet,IPhoto{
+
+}
+```
+在多个接口中有重命名的方法，在被同一个类继承的时候，会报错，解决方法如下：对他们重名的内容进行重载
+```java
+public class SmartWatch implements INet,IPhoto{
+
+	public void connection(){
+		System.out.println("Smartwacth connection");		//只是示例，这句并非一定要写
+	}
+
+}
+```
+-------------------
+此外，我们还可以实现继承和接口的同时出现，注意：继承一定要在接口的前面
+可以继承唯一父类，但是可以同时实现若干接口（实现接口时一定要注意，要一定要实现接口中待实现的方法）
+示例代码
+```java
+public class FourthPhone extends ThirdPhone implements IPhotos,INet{
+
+}
+```
+如果在继承的父类和实现的接口中同时都有相同签名的方法，调用此方法时，默认调用父类派生的方法，当然在该子类中也可以重写该方法
+###6.5多接口名常量处理的解决方案
+* 常量在多接口间重命名，解决方法如下：
+```java
+interface one{
+	static int x = 11;
+}
+interface two{
+	static int x = 22;
+}
+public class TestOne implements One,Two{
+	public void test(){
+		System.out.println("One.x");
+		System.out.println("Two.x");
+	}
+	
+}
+```
+* 常量在多接口以及继承中重命名，解决方法如下：
+```java
+interface one{
+	static int x = 11;
+}
+interface two{
+	static int x = 22;
+}
+class Three{
+	public static final int x = 33; 
+}
+public class TestOne implements One,Two{
+	public int x = 4;
+	public void test(){
+		System.out.println(x);
+	}
+	
+}
+```
+
+## 7.内部类
+### 7.1定义/概念
+* 内部类：在java中，可以将一个类定义在另一个类里面或者一个方法里面，这样的类称为内部类
+* 外部类：包含内部类的类
+* 为什么要将一个类定义在另一个里面呢？内部类隐藏在外部类之内，更好的实现了信息隐藏；同时避免其他类的调用，只有对应外部类才能使用
+* 内部类分类
+	* 成员内部类
+	* 静态内部类
+	* 方法内部类
+	* 匿名内部类
+### 7.2成员内部类
+成员内部类又被称为普通内部类
+示例代码
+```java
+//外部类人
+public class Person{
+	int age;
+
+	public Heart getHeart(){
+		return new Heart();
+	}
+
+	//成员内部类：心脏
+	class Heart{
+		public String beat(){
+			return "心脏在跳动";
+		}
+	}
+}
+```
+#### 内部类的实例化方法
+内部类在外部使用时，无法直接实例化，需要借由外部类信息才能完成实例化
+1. 方式1：new 外部类.new 内部类（即先进大门，再进卧室）——生成一个新的外部类以及它的内部类
+2. 方式2：外部类对象.new 内部类
+3. 方式3:(利用外部类中实例化内部类的方法）外部类对象.获取方法
+```java
+	Person lili = new Person();
+	lili.age =12;
+		
+	//获取内部类对象实例，方式1：new 外部类.new 内部类（即先进大门，再进卧室）
+	Person.Heart myHeart = new Person().new Heart(); 
+
+	//获取内部类对象实例，方式2：外部类对象.new 内部类
+	myHeart = lili.new Heart();
+	
+	//获取内部类对象实例，方式3:(利用外部类中实例化内部类的方法）外部类对象.获取方法
+	myHeart = lili.getHeart();
+```
+#### 内部类的访问修饰符
+* 内部类的访问修饰符可以任意，但是访问范围会受到影响
+* 内部类可以直接访问外部类的成员；如果出现同名属性，优先访问内部类中定义的
+* 如果想要访问外部类中定义的属性（内部类和外部类出现的同名属性）
+	使用如下代码`Person.this.age`这句话的意思是，访问Perison这个类中age成员
+* 在外部类想要访问内部类的成员，只能通过内部类实例，无法直接访问
+* 内部类编译后，class文件命名：`外部类$内部类.class`
+* 内部类中是否可以包含于外部类相同方法前面的方法？
+### 7.3静态内部类
+关键字`static`，静态内部类对象可以不依赖于外部类对象，直接创建
+示例代码
+```java
+public class Person{
+	int age;
+
+	public Heart getHeart(){
+		return new Heart();
+	}
+
+	//成员内部类：心脏
+	static class Heart{
+		public String beat(){
+			return "心脏在跳动";
+		}
+	}
+}
+```
+注意：
+1. 静态内部类中，只能直接访问外部类的静态成员，如果需要调用非静态成员，可以通过对象实例
+	例如：`new Person().eat();`
+2. 静态内部类对象实例时，可以不依赖于外部类对象
+3. 可以通过外部类.内部类.静态成员的方式，访问内部类中的静态成员，
+	例如：`Person.Heart.say();`
+4. 当内部类属性与外部类属性同名时，默认直接调用内部类中的成员；
+	如果需要访问外部类中的静态属性，则可以通过`外部类.属性`的方式；
+	如果需要访问外部类中的非静态属性，则可以通过`new 外部类().属性`的方式；
+#### 获取静态内部类对象实例
+
+```java
+Person.Heart myHeart = new Person.Heart();
+```
+
+### 7.4方法内部类
+#### 定义
+方法内部类：定义在外部类方法中的内部类，也成局部内部类。
+* 方法内定义的局部变量只能在方法里使用
+* 方法内不能定义静态成员
+* 不能用`public private protected`来修饰
+实例代码：
+```java
+public Object getHeart(){
+	class Heart{
+		public int age = 13;
+		int temp = 22;
+
+		public void say(){
+			System.out.println("hello");
+		}
+
+		public void eat(){
+
+		}
+
+		public String beat(){
+			new Person().eat();
+			return Person.age + "岁的心脏在跳动";
+		}
+	}
+
+	return new Heart().beat();		//向上转型
+}
+```
+调用`getHeart()`中的`beat()`
+```java
+	Person lili = new Person();
+	lili.age = 12;
+	System.out.println(lili.getHeart);
+```
