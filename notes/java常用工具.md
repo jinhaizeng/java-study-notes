@@ -435,3 +435,67 @@ public class TryDemoFive {
 * 具体如何处理异常，要根据不同的业务需求和异常类型去决定
 * 尽量添加finally语句块去是释放占用的资源
 * 当子类重写父类抛出异常的方法时，声明的异常必须是父类方法所声明异常的同类或子类
+
+# 二、java包装类
+包装类为了解决基本数据类型没有属性、方法、无法对象化交互的问题
+## 1.基本数据和包装类之间的转换
+* 装箱：将基本数据类型转换成对应的包装类
+* 拆箱：将包装类转换成对应的基本数据类型
+```java
+int t1 = 2;
+//1.自动装箱——即装箱操作
+Integer t2 =t1;
+		
+//测试
+System.out.println("int类型变量t1 ="+ t1);
+System.out.println("int类型变量t2 ="+ t2);
+```
+
+## 2.基本数据类型和字符串之间的转换
+这一部分没有搞懂原理，只是会用这个方法而已，有时间要再看一下原理的部分
+
+## 3.需要了解的几点知识
+### 3.1包装类对象的初始值
+### 3.2包装类对象间的比较
+经典例题
+```java
+// TODO Auto-generated method stub
+Integer one = new Integer(100);
+Integer two = new Integer(100);
+System.out.println("one==two的结果："+(one == two));			//结果false
+		
+Integer three = 100;	//自动装箱
+//相当于隐式的执行了：Integer three = Integer.valueOf(100);
+//因为缓存区没有，所以其会在缓存区构建一个
+System.out.println("three==100的结果是："+(three == 100));	//自动拆箱		//结果true
+		
+Integer four = 100;
+////相当于隐式的执行了：Integer three = Integer.valueOf(100);
+//当这个值>-128且<127时，会直接调用缓存区内已经构建的那个100
+//此时three和four指向缓存区的同一块空间
+System.out.println("three==four的结果是："+(three == four));		//结果true
+		
+Integer five = 200;
+System.out.println("five==200的结果是："+(five == 200));			//结果true
+		
+Integer six = 200;
+//数值超过127，会直接通过new integer(200)构造新的实例化对象
+System.out.println("five==six的结果是："+(five==six));			//结果false
+```
+`byte short int long char boolen`都是可以应用对象常量池这个概念的，但是`float double`这个两个概念是不可以应用对象常量值这个概念的
+```java
+Double d1 = Double.valueOf(100);
+Double d2 = Double.valueOf(100);
+System.out.println("d1 == d2结果："+(d1 == d2))；		//结果false
+```
+
+# 三、字符串处理类
+## 1.String常用方法
+### 1.1 创建String对象的方法
+```java
+String s1 = "imooc";			//创建一个字符串对象imooc，名为s1
+String s2 = new String();		//创建一个空字符串对象，名为s2
+String s3 = new String("imooc");//创建一个字符串对象imooc，名为s3
+```
+### 1.2String的常用方法
+![String的常用方法](https://raw.githubusercontent.com/jinhaizeng/java-study-notes/master/%E5%9B%BE%E5%BA%8A/String%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95.PNG)
