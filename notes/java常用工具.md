@@ -499,3 +499,66 @@ String s3 = new String("imooc");//创建一个字符串对象imooc，名为s3
 ```
 ### 1.2String的常用方法
 ![String的常用方法](https://raw.githubusercontent.com/jinhaizeng/java-study-notes/master/%E5%9B%BE%E5%BA%8A/String%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95.PNG)
+
+ ### 1.3 length() charAt() substring()示例程序
+ ```java
+ //定义一个字符串"JAVA 编程 基础"
+String str = "JAVA 编程 基础";
+//打印输出字符串的长度
+System.out.println("字符串的长度是："+str.length());
+		
+//取出字符“程”并输出
+System.out.println(str.charAt(6));
+		
+//取出子串“编程 基础”并输出
+System.out.println(str.substring(5));
+		
+//取出子串“”编程
+System.out.println(str.substring(5,7));
+```
+
+### 1.4indexOf()和lastIndxOf()
+```java
+//定义一个字符串"JAVA编程基础，我喜欢java编程"
+String str = new String("JAVA编程基础，我喜欢java编程");
+		
+//查找字符'A'在字符串中第一次出现的位置
+System.out.println("查找字符'A'在字符串中第一次出现的位置:"+str.indexOf('A'));
+		
+//查找子串"编程"在字符串中第一次出现的位置
+System.out.println("子串\"编程\"在字符串中第一次出现的位置"+str.indexOf("编程"));
+	
+//查找字符'A'在字符串中最后一次出现的位置
+System.out.println("查找字符'A'在字符串中最后一次出现的位置:"+str.lastIndexOf('A'));
+```
+### 1.5getBytes()方法的使用
+```java
+// TODO Auto-generated method stub
+//字符串和byte数组之间的互相转换
+//定义一个字符串
+String str = new String("JAVA 编程 基础");
+//将字符串转换为byte数组，并打印输出
+byte[] arrs = str.getBytes();
+for(int i=0;i < arrs.length; i++) {
+		System.out.print(arrs[i]+" ");
+	}
+		
+System.out.println();
+//将byte数组转换为字符串
+String str1 = new String(arrs);
+ystem.out.println(str1);
+```
+### 1.6等于运算符和equals方法的区别
+equals判断的是内容是否相同，等于运算符判断的是地址是否相同
+```java
+//==和equals方法的区别
+//定义是哪个字符串，内容都是imooc
+String str1 = "imooc";
+String str2 = "imooc";
+String str3 = new String("imooc");
+System.out.println("str1和str2的内容相同？"+(str1.equals(str2)));
+System.out.println("str2和str3的内容相同？"+(str2.equals(str3)));
+
+System.out.println("str1和str2的地址相同？"+(str1 = str2));
+System.out.println("str2和str3的地址相同？"+(str2 = str3));
+```
