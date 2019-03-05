@@ -624,7 +624,7 @@ Collection由三部分组成：
 * Set——集：无序，不可以有重复，举例：HanshSet，表示哈希集
 Map的主要实现类：HashMap（哈希表），以键值对的形式呈现
 
-## 2.1 List概述
+## 2 List概述
 * List是元素有序并且可以重复的集合，称为序列
 * List可以精确的控制每个元素的插入位置，或删除某个位置的元素
 * List的两个主要实现类是ArrayLiat和LinkedList
@@ -704,4 +704,135 @@ Map的主要实现类：HashMap（哈希表），以键值对的形式呈现
 		}
 ```
 #### 公告的删除和修改 
+```java
+// TODO Auto-generated method stub
+		Notice notice1 = new Notice(1,"欢迎来到慕课网!","管理员",new Date());
+		Notice notice2 = new Notice(2,"请同学们按时提交作业！","老师",new Date());
+		Notice notice3 = new Notice(3,"考勤通知！","老师",new Date());
+		
+		//添加公告
+		ArrayList noticeList = new ArrayList();
+		noticeList.add(notice1);
+		noticeList.add(notice2);
+		noticeList.add(notice3);
+		
+		//显示公告
+		System.out.println("公告的内容为：");
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+			//get返回值类型是一个object类，为getTitle的对象要求是一个notice类
+			//所以必须用强制类型转换，把object类转换成notice类
+				
+		}
+		
+		Notice notice4 = new Notice(4,"在线编辑器可以使用啦!","管理员",new Date());
+		noticeList.add(1,notice4);
+		
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+		}
+		
+		System.out.println("***********************************************");
+		//删除按时完成作业的公告
+		noticeList.remove(2);
+		//显示公告
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+		}
+		
+		
+		//将第二条公告改为：Java在线编辑器可以使用啦！
+		System.out.println("***********************************************");
+		notice4.setTitle("Java在线编辑器可以使用啦！");
+		noticeList.set(1, notice4);
+		
+		//注意：在本例题中，使用setTitle就可以了，如果创建一个新的对象，用新的方法去替换
+		//notice4的时候需要调用ArrayList的set方法
+		System.out.println("修改后公告的内容为：");
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+		}
+```
+## 3.Set
+Set是元素无序并且不可以重复的集合，被称为集
+HashSet
+* HashSet是Set的一个重要实现类，称为哈希集
+* HashSet中的元素无序并且不可以重复
+* HashSet只允许一个null元素
+* 具有良好的存取和查找性能
+ 
+Iterator（迭代器）
+* Iterator接口可以以统一的方式对各种集合元素进行遍历
+* hasNext()方法检测集合中是否还有下一个元素
+* next()方法返回集合中的下一个元素
+* 将集中元素导入到迭代器中
+```java
+Iterator it = set.iterator();
+//遍历迭代器
+while(it.hasNext()){
+	System.out.print(it.next()+ "  ");  
+}
+```
 
+### HashSet的应用例题
+案例：用HashSet存储多个表示颜色的英文单词，并输出
+单词包括：blue、red、black、yellow和white
+```java
+package com.imooc.set;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public class WorldDemo {
+
+	public static void main(String[] args) {
+		// 讲英文单词添加到HashSet中
+		Set set = new HashSet();
+		//向集合中添加元素
+		set.add("blue");
+		set.add("red");
+		set.add("black");
+		set.add("yellow");
+		set.add("white");
+		//显示集合的内容
+		System.out.println("集合中的元素为：");
+		//将集合中的内容转存到迭代器中
+		Iterator it = set.iterator();
+		//遍历迭代器并输出元素
+		while(it.hasNext()) {
+			System.out.print(it.next() + "  ");
+		} 
+		
+		System.out.println();
+		//在集合中插入一个新的单词,重复信息不会被插入到set集合中
+		set.add("white");
+		it = set.iterator();
+		//遍历迭代器并输出元素
+		System.out.println("******************************");
+		System.out.println("插入重复元素后的输出结果为：");
+		while(it.hasNext()) {
+			System.out.print(it.next() + "  ");
+		} 
+		//插入失败，但是不会报错
+	}
+
+}
+```
+### 宠物猫信息管理
+需求
+* 添加和显示宠物猫信息
+* 查找某只宠物猫的信息并输出
+* 修改宠物猫的信息
+* 删除宠物猫的信息
+
+属性
+* 名字 name
+* 年龄 month
+* 品种 species
+
+方法
+* 构造方法
+* 获取和设置属性值的方法
+* 其他方法
+继续该看3-6了

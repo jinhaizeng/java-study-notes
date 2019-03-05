@@ -42,7 +42,17 @@ public class NoticeTest {
 		}
 		
 		
-		//
+		//将第二条公告改为：Java在线编辑器可以使用啦！
+		System.out.println("***********************************************");
+		notice4.setTitle("Java在线编辑器可以使用啦！");
+		noticeList.set(1, notice4);
+		
+		//注意：在本例题中，使用setTitle就可以了，如果创建一个新的对象，用新的方法去替换
+		//notice4的时候需要调用ArrayList的set方法
+		System.out.println("修改后公告的内容为：");
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+		}
 	}
 
 }
