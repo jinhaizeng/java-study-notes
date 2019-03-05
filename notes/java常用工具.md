@@ -562,3 +562,146 @@ System.out.println("str2和str3的内容相同？"+(str2.equals(str3)));
 System.out.println("str1和str2的地址相同？"+(str1 = str2));
 System.out.println("str2和str3的地址相同？"+(str2 = str3));
 ```
+![str创建对象语句的区别](https://raw.githubusercontent.com/jinhaizeng/java-study-notes/master/%E5%9B%BE%E5%BA%8A/str%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8C%BA%E5%88%AB.PNG)
+
+### 1.7 字符串的不可变性
+`String`的不可变性：String对象一旦被创建，则不能修改，是不可变的。所谓的修改其实是创建了新的对象，所指向的内存空间不变。
+```java
+String s1 = "imooc";
+s1 = "hello,"+s1;
+//s1不再指向imooc所在的内存空间，而是指向了"hello,imooc"（新创建的对象）
+System.out.println("s1="+s1)
+```
+
+```java
+String s3 = "hello,imooc";
+System.out.println("子串："+s3.substring(0,5));			//此句相当如在常量池生成了一个hello，注意此时s3不变
+System.out.println("s3="+s3);
+```
+## 2.StringBuilder
+* String和StringBuilder的区别：
+	String具有不可变性，而StringBuilder不具备
+* 建议：
+	当频繁操作字符串时，使用StringBuilder。因为string具有不可变性，当频繁操作String时，会产生大量的中间变量，也会产生很多在常量池中废弃的数据，而使用StringBuilder时可以避免这种情况的发生
+* StringBuilder和StringBuffer区别
+	* 两者基本相似
+	* StringBuffer是线程安全的，StringBuilder则没有，所以性能略高
+
+```java
+//定义一个字符串"你好"
+StringBuilder str = new StringBuilder("你好");
+//在"你好"后面添加内容，将字符串编程"你好,imooc!"
+//方法一
+Str.append(',');
+Str.append("imooc!");
+//方法二
+Str.append(',').append("imooc!");
+//以上两种方法所得到的结果都是相同的
+
+//将字符串编程"你好，imOOC！"
+//两种方式：
+// 1.使用delete方法删除mooc，然后在插入MOOC
+str.delete(4,8).insert(4,"MOOC");
+// 2.使用replace方法直接替换
+str.replace(4,8,"MOOC");   
+```
+
+# 四、java集合
+使用集合相关函数，要注意导入包`java.util`
+Java中的集合是工具类，可以存储任意数量的具有共同属性的对象
+为什么使用集合，而不使用数组呢？
+集合的应用场景
+* 无法预测存储数据的数量
+* 同时存储具有一对一关系的数据
+* 需要进行数据的增删
+* 数据重复问题
+
+## 1.集合框架的体系结构
+由两部分"Collection——类的对象"和"Map——键值对"组成
+Collection由三部分组成：
+* List——序列：有序，可以有重复，举例：ArrayList，类似动态数组
+* Queue——队列：有序，可以有重复，举例：LinkList，表示链表		
+* Set——集：无序，不可以有重复，举例：HanshSet，表示哈希集
+Map的主要实现类：HashMap（哈希表），以键值对的形式呈现
+
+## 2.1 List概述
+* List是元素有序并且可以重复的集合，称为序列
+* List可以精确的控制每个元素的插入位置，或删除某个位置的元素
+* List的两个主要实现类是ArrayLiat和LinkedList
+### ArrayList
+* ArrayList底层由数组实现的
+* 动态增长，以满足应用程序的需求
+* 在列表尾部插入或删除数据非常有效
+* 更适合查找和更新元素
+* ArrayList中的元素可以为null
+```java
+//用ArrayList存储编程语言的名称，并输出
+		ArrayList list = new ArrayList();
+		list.add("Java");
+		list.add("C");
+		list.add("C++");
+		list.add("Go");
+		list.add("swift");
+		//输出列表中元素的个数
+		System.out.println("列表中元素的个数为："+list.size());
+		
+		System.out.println("********************************");
+		for(int i=0;i < list.size(); i++)
+		{
+			System.out.print(list.get(i)+",");
+		}
+		
+		System.out.println();
+		//方法一
+		list.remove(2);
+		
+		//方法二
+		list.remove("C++");
+		System.out.println("********************************");
+		System.out.println("移除C++以后的列表元素为：");
+		for(int i=0;i < list.size(); i++)
+		{
+			System.out.print(list.get(i)+",");
+		}
+```
+
+案例：公告管理
+需求：
+* 公告的添加和显示
+* 在指定位置处插入公告
+* 删除公告
+* 修改公告
+
+公告类属性：
+* 编号 id
+* 标题 title
+* 创建人 creator
+* 创建时间 createTime
+
+公告类方法：
+* 构造方法
+* 获取和设置属性值的方法
+详细内容见ImoocPro的包"com.imooc.set"
+#### 公告的添加和显示
+```java
+// TODO Auto-generated method stub
+		Notice notice1 = new Notice(1,"欢迎来到慕课网!","管理员",new Date());
+		Notice notice2 = new Notice(2,"请同学们按时提交作业！","老师",new Date());
+		Notice notice3 = new Notice(3,"考勤通知！","老师",new Date());
+		
+		//添加公告
+		ArrayList noticeList = new ArrayList();
+		noticeList.add(notice1);
+		noticeList.add(notice2);
+		noticeList.add(notice3);
+		
+		//显示公告
+		System.out.println("公告的内容为：");
+		for(int i=0;i < noticeList.size();i++) {
+			System.out.println(i+1+":"+((Notice)(noticeList.get(i))).getTitle());	
+			//get返回值类型是一个object类，为getTitle的对象要求是一个notice类
+			//所以必须用强制类型转换，把object类转换成notice类
+		}
+```
+#### 公告的删除和修改 
+
