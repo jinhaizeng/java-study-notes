@@ -1,23 +1,33 @@
-字节跳动的春招还没开始
+
 中兴的春招要开始了，注意下笔试的问题，专业问题的问题
-浩鲸科技的简历投了，等着他面试吧
+
 熊猫好像还没开始春招
 烽火好像也没有开始春招
 浦发在上海，要考虑下（要工作日才能投简历）
 浙江移动：campus.job.com/zmcc-2019
 oppe的C那一块也还行：http://oppo.zhaopin.com/jobs.html
 
+明天投浦发
+
+三星估计投不上，斟酌下
 以及投递了简历的公司，注意检查简历的进度：
-中兴、途牛、浩鲸（拒绝了他的交付）
-招商银行、中磊电子
+中兴内推简历已投
+浩鲸（拒绝了他的交付，又投了一遍校招，看看他要不要我做开发）：http://www.hotjob.cn/wt/ztesoft/web/index/applyPositionN300!listApplyPosition?brandCode=1&operational=a98194847d810c876a42daeb182bc3d580a679a3c746496ce409e7613c8f57e69aff580c23120ed001d99bbb149a09602189a3c669ff38239739b38b29fd8ca834cfd0bb92999e56d41aec4179e2c2e12c9bbdd50b992bf267b49fb667e9f1e1
+招商银行已投简历（基本凉了，招行笔试没过）
+中磊电子已投简历
 字节跳动简历已投：https://job.bytedance.com/user/profile/
+途牛已投简历：http://tuniu.zhiye.com/Portal/Apply/Index
+电信简历也投了
+帆软也投了
 
 初步考虑pass的公司：
 海能达，在深圳初步考虑不去
 移动没有做技术的
 CVTE 工作地点都在广州
-深信服也是在深圳？
+深信服也是在深圳
 锐捷的在福建pass
+vivo没有研发岗pass
+多益网络pass，工作地点在武汉和广州
 
 
 准备投递的公司：

@@ -835,4 +835,126 @@ public class WorldDemo {
 * 构造方法
 * 获取和设置属性值的方法
 * 其他方法
-继续该看3-6了
+
+
+详细代码内容见`com.imooc.set`包中的`Cat``CatTest`这两个包
+`Set<Cat> set = new HashSet();`这条语句限定了加入set集合的元素必须是`Cat`型的元素，这样就保证了以后对这个集合的操作都只会是对`Cat`型的操作
+对象加入set，并且遍历（遍历需要把set转换成迭代器，然后迭代遍历）
+```java
+// 定义宠物猫对象
+		Cat huahua = new Cat("花花",12,"英国短毛猫");
+		Cat fanfan = new Cat("凡凡",3,"中华田园猫");
+		
+		//将宠物猫对象放入HashSet
+		Set<Cat> set = new HashSet();
+		set.add(huahua);
+		set.add(fanfan);
+		//显示宠物猫信息
+		Iterator<Cat> it = set.iterator();
+		while(it.hasNext())
+			System.out.println(it.next());
+```
+
+添加一个属性相同的对象(set在对系统类的时候，重复类是不会被添加进去的。但是对于自定义类，如果不重写`hashCode()和equal()`，是无法实现重复类不会被添加进去这个功能的)
+```java
+//在添加一个与花花属性一样的猫
+		Cat huahua01 = new Cat("花花",12,"英国短毛猫");
+		set.add(huahua01);
+		System.out.println("**********************************");
+		System.out.println("添加重复数据后的宠物猫信息：");	//如果不重写hashCode()和equals()这两个方法，还是会被添加进去
+		it = set.iterator();
+		while(it.hasNext())
+			System.out.println(it.next());
+```
+
+在集合中查找花花的信息并输出（根据对象名查找）
+```java
+//在集合中查找花花的信息并输出
+		if(set.contains(huahua)) {
+			System.out.println("花花找到了");
+			System.out.println(huahua);
+		}
+		else {
+			System.out.println("花花没找到");
+		}
+```
+
+在集合中使用名字查找花花的信息，即利用对象属性查找集合中的对象
+```java
+//在集合中使用名字查找花花的信息
+		//思路：在集合中遍历所有元素，挨个比较名字
+		System.out.println("**********************************");
+		System.out.println("通过名字查找花花的信息");
+		boolean flag = false;
+		Cat c = null;
+		it = set.iterator();	//重置迭代器，让迭代器从第一个开始（上一个函数遍历到最后了）
+		while(it.hasNext()) {
+			c = it.next();
+			if(c.getName().equals("花花")) {
+				flag = true;
+				break;
+			}
+		}
+		
+		if(flag) {
+			System.out.println("花花找到了");
+			System.out.println(c);
+		}
+		else {
+			System.out.println("花花没找到了");
+		}
+```
+
+在集合中删除指定对象的信息，注意删除掉集合中的对象后，集合会被打乱，可能会出现异常和错误
+* 解决方法一——使用break(只有一条满足条件)
+```java
+//删除花花的信息并重新输出
+		for(Cat cat:set) {
+			if("花花".equals(cat.getName()))
+				set.remove(cat);		//此时移除掉"花花"以后，set就被打算了，再遍历就会出问题
+				break;					//要解决这个问题，就要再找到以后break
+		}
+		
+		for(Cat cat:set) {
+			System.out.println(cat);
+		}
+```
+* 解决方法二——利用`removeAll`删除其子集（有多条满足条件）
+```java
+Set<Cat> set1 = new HashSet<Cat>(){
+	for(Cat cat : set){
+		if(cat.getMonth()<5){
+			set1.add(cat);
+		}
+	}
+	set.removeAll(set1);
+}
+```
+
+删除集合中所有元素
+```java
+//删除集合中的所有宠物猫信息
+		System.out.println("**********************************");
+		boolean flag1 = set.removeAll(set);
+		if(flag1) {
+			System.out.println("猫都不见了");
+		}
+		else {
+			System.out.println("猫还在。。。");
+		}
+```
+
+## 4.Map
+Map:
+* Map中的数据是以键值对（key-value）的形式存储的：例如用户名和对应的密码
+* key-value以Entry类型的对象实例存在
+* 可以通过key值快速的查找value
+* 一个映射不能包含重复的键
+* 每个键最多只能映射到一个值
+
+HashMap:
+* 基于哈希表的Map接口的实现
+* 允许使用null值和null键
+* key值不允许重复
+* HashMap中的Entry对象是无序排列的-
+4-2以后都没学，有时间的时候补上

@@ -39,9 +39,30 @@ public class Cat {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Species == null) ? 0 : Species.hashCode());
+		result = prime * result + month;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj)
+			return true;
+		if(obj.getClass() == Cat.class) {
+			Cat cat =(Cat)obj;
+			return cat.getName().equals(name)&&(cat.getMonth()==month)&&(cat.getSpecies().equals(Species));
+		}
+		return true;
+	}
+	
+	@Override
 	public String toString() {	//不重写的话，println输出的是对象的地址
 		return "[姓名=" + name + ", 年龄=" + month + ", 品种=" + Species + "]";
-	}
+	}  
 	
 	
 	
