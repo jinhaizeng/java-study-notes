@@ -960,18 +960,176 @@ HashMap:
 4-2以后都没学，有时间的时候补上
 
 # 四、线程
+**线程这一块还是要结合数据结构来看**
 * 进程的概念：进程是指可执行程序并存放在计算机存储器的一个指令序列，它是一个动态执行的过程
 * 线程可以看做是进程的子程序（通过时间片轮转法）
 
-## 1.线程创建
-* 创建一个Thread类，或者一个Thread子类的对象
+## 1.线程创建（只有这两种方式）
+* 创建一个Thread类，或者一个Thread子类（继承Thread）的对象
 * 创建一个实现Runable接口的类的对象
 ### 1.1Thread类
 * Thread类是一个线程类，位于java。lang包下
+* thread构造方法
 
 | 构造方法 | 说明 |
 | ------- | ---- |
 | Thread() | 创建一个线程对象 |
 | Thread(String name) | 创建一个具有指定名称的线程对象 |
 | Thread(Runnable target) | 创建一个基于Runnable接口实现类的线程对象 |
-| Thread(Runnable target,String name) |创建一个基于Runnable接口实现类、指定名称的线程对象
+| Thread(Runnable target,String name) |创建一个基于Runnable接口实现类、指定名称的线程对象|
+* Thread类的常用方法
+
+| 方法 | 说明 |
+| ---- | ---- |
+| public void run() | 线程相关的代码写在该方法中，一般需要重写 |
+| public void start() | 启动线程的方法 |
+| public static void sleep(long m) | 线程休眠m毫秒的方法 |
+| public void join() | 优先执行调用join()方法的线程(抢占式) |
+
+* Runnable接口
+	* 只有一个方法run()
+	* Runnable是Java中用以实现线程的接口
+	* 任何实现线程功能的类都必须实现该接口
+
+### 1.2 通过Thread类创建线程
+```java
+package com.imooc.thread;
+
+class MyThread extends Thread{
+	public void run() {
+		System.out.println("该线程正在执行");
+	}
+}
+public class ThreadTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MyThread mt = new MyThread();
+		mt.start();		//启动线程
+	}
+
+}
+```
+注意，启动线程是`类名.start()`而不是调用线程内部的类方法。启动线程以后，我们还是执行`run()`里面的代码。同一个线程只能执行一次`start()`方法
+### 1.3 通过实现Runnable接口创建线程
+* 为什么要实现Runnable接口
+	* Java不支持多继承
+	* 不打算重写Thread类的其他方法（继承一个类就要重写它的所有方法）
+
+```java
+package com.imooc.runnable;
+
+class PrintRunnable implements Runnable{
+	@Override
+	public void run() {
+		System.out.println(Thread.currentThread().getName()+"正在运行！");
+		
+	}
+}
+
+public class RunnableTest {
+
+	public static void main(String[] args) {
+		PrintRunnable pr = new PrintRunnable();
+		Thread t1 = new Thread(pr);
+		t1.start();
+
+	}
+
+}
+
+```
+通过Runnable接口来启动线程必须是以下三步：
+1. 接口对象实例化
+2. 利用接口对象实现线程对象实例化 `Thread(Runnable target)`
+3. 启动线程
+
+## 2.线程的状态和生命周期
+* 线程的状态：新建（NEW）、可运行状态（Runnable）、正在运行（Running）、阻塞（Blocked）、终止（Dead）
+![线程状态之间的转换]()
+## 3.sleep方法应用
+sleep方法将正在运行状态转换为阻塞态，时间要求不精确的情况下使用时ok的
+* Thread类的方法`public static void sleep(long millis)`
+* 作用：在指定的毫秒数内让正在指定的线程休眠（暂停执行）
+* 参数为休眠的时间，单位是毫秒
+## 4.join方法应用
+* Thread类的方法`public final void join()`
+* 作用：等待调用该方法的线程结束后才能执行（抢占其他线程的资源）
+实例代码
+```java
+package com.imooc.joinDemo;
+
+class MyThread extends Thread {
+	@Override
+	public void run() {
+		for(int i=0; i < 10;i++)
+			System.out.println(getName()+"正在执行第"+i+"次！");
+	}
+}
+public class JoinDemo {
+
+	public static void main(String[] args) {
+		MyThread mt = new MyThread();
+		mt.start();
+		try {
+			mt.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(int i=0; i < 20; i++)
+			System.out.println("主进程运行第"+i+"次！");
+
+	}
+
+}
+```
+
+* Thread类方法`public final void join(long millis)`
+* 作用：等待该进程终止的最长时间为millis毫秒
+
+## 5.线程优先级
+* Java为线程类提供了10个优先级
+* 优先级可以用整数1-10表示，超过范围会抛出异常
+* 主线程默认优先级为5
+* 可以用优先级常量表示进程优先级：
+	* MAX_PRIORITY：线程的最高优先级10
+	* MIN_PRIORITY：线程的最低优先级1
+	* NORM_PRIORITY：线程的默认优先级5
+* 优先级相关的方法
+
+| 方法 | 说明 |
+| ---- | --- |
+| public int getPriority() | 获取线程优先级的方法 |
+| public void setPriority() |设置线程优先级的方法 |
+随便举两个例子
+```java
+Thread.currentThread().getPriority();	//获取主线程优先级的调用方法
+
+MyThread mt1 = new MyThread("线程1");	//设置线程优先级的两种方法
+mt1.setPriority(10);
+mt1.setPriority(Thread.MAX_PRIORITY);
+```
+## 6.线程同步
+多线程运行问题
+* 各个线程是通过竞争CPU时间而获得运行计划的
+* 各线程什么时候得到CPU时间，占用多久，是不可预测的
+* 一个正在运行着的线程在什么地方被暂停是不确定的
+
+解决方案
+* 使用关键字`synchronized`实现（保证共享对象同一时刻只能被一个进程访问）
+* synchronized关键字用在
+	* 成员方法
+	* 静态方法
+	* 语句块
+
+```java
+public synchronized void saveAccount(){}
+public static synchronized void saveAccount(){}
+synchronized(obj){......}
+```
+
+## 7.线程间通信
+* wait()方法：中断方法的执行，使线程等待
+* notify()方法：唤醒处于等待的某一个线程，使其结束等待
+* notifyAll()方法：唤醒所有处于等待的线程，使它们结束等待
