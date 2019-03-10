@@ -5,13 +5,19 @@
 烽火好像也没有开始春招
 浦发在上海，要考虑下（要工作日才能投简历）
 浙江移动：campus.job.com/zmcc-2019
-oppe的C那一块也还行：http://oppo.zhaopin.com/jobs.html
+
+
+待投岗位：
+国家计算机网络应急技术处理协调中心：http://www.cac.gov.cn/2019-03/06/c_1124199716.htm?from=groupmessage&isappinstalled=0
+南京银行：https://job.njcb.com.cn
+上海临港：http://lghy.zhaopin.com/careers.html
+宇视要去杭州面试，考虑下要不要投吧：https://talent.uniview.com/wt/uniview/web/index/applyPositionN300!chooseResume?recruitType=1&brandCode=1&showPrompt=true&edtResumeNum=0&operational=093a65510110a6982bc557d03ecc5b49d744e62c3f0a2961e4a43c13c8cd23db2c241e796b1e841473205f33d0b1546a84ae561e6f8f117c338c5df1805e44e74c5254ad97c919ebc6bcc777fa01a13878b1ce4307e806adf779bad15b5bbfecff0544fb267ea33eea290e1b06cf50846750ed6fe84ded5e508a3feefd7983080b4e8ec58f41e19c
 
 明天投浦发
 
 三星估计投不上，斟酌下
 以及投递了简历的公司，注意检查简历的进度：
-中兴内推简历已投
+中兴内推简历已投：今天下午发个短信给马部长确认下，最后再争取下
 浩鲸（拒绝了他的交付，又投了一遍校招，看看他要不要我做开发）：http://www.hotjob.cn/wt/ztesoft/web/index/applyPositionN300!listApplyPosition?brandCode=1&operational=a98194847d810c876a42daeb182bc3d580a679a3c746496ce409e7613c8f57e69aff580c23120ed001d99bbb149a09602189a3c669ff38239739b38b29fd8ca834cfd0bb92999e56d41aec4179e2c2e12c9bbdd50b992bf267b49fb667e9f1e1
 招商银行已投简历（基本凉了，招行笔试没过）
 中磊电子已投简历
@@ -19,6 +25,8 @@ oppe的C那一块也还行：http://oppo.zhaopin.com/jobs.html
 途牛已投简历：http://tuniu.zhiye.com/Portal/Apply/Index
 电信简历也投了
 帆软也投了
+oppo已经投了，等消息吧
+华勤通讯也投了，看结果吧
 
 初步考虑pass的公司：
 海能达，在深圳初步考虑不去
@@ -33,3 +41,4 @@ vivo没有研发岗pass
 准备投递的公司：
 电信：https://zhaopin.telecomjs.com/www/position/mobile/list;jsessionid=8C0B1C59790E113D0D42CD696B1A5E03?regionId=21
 南瑞：http://nari2019.zhaopin.com/career.html
+电信那个这两天可以考虑投一下：https://zhaopin.telecomjs.com/www/position/web/search?zhpType=1

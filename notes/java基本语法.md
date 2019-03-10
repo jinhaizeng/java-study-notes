@@ -121,7 +121,7 @@ while循环和C语言一样，continue、break也一样，不记得话去google
 
 
 ### 增强型for循环，又叫foreach循环
-foreach循环应用
+foreach循环应用：注意这个只能用于数组中
 ```java
 int[] arr = {1,2,3,4,5};
 for(int n:arr)                  //作用：把arr数组中的每一个元素拿出来赋值给n，相当于遍历了一步数组arr

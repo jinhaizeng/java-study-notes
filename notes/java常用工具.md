@@ -958,3 +958,20 @@ HashMap:
 * key值不允许重复
 * HashMap中的Entry对象是无序排列的-
 4-2以后都没学，有时间的时候补上
+
+# 四、线程
+* 进程的概念：进程是指可执行程序并存放在计算机存储器的一个指令序列，它是一个动态执行的过程
+* 线程可以看做是进程的子程序（通过时间片轮转法）
+
+## 1.线程创建
+* 创建一个Thread类，或者一个Thread子类的对象
+* 创建一个实现Runable接口的类的对象
+### 1.1Thread类
+* Thread类是一个线程类，位于java。lang包下
+
+| 构造方法 | 说明 |
+| ------- | ---- |
+| Thread() | 创建一个线程对象 |
+| Thread(String name) | 创建一个具有指定名称的线程对象 |
+| Thread(Runnable target) | 创建一个基于Runnable接口实现类的线程对象 |
+| Thread(Runnable target,String name) |创建一个基于Runnable接口实现类、指定名称的线程对象

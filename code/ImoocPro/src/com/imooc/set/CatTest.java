@@ -73,10 +73,11 @@ public class CatTest {
 			System.out.println("花花没找到了");
 		}
 		
-		//删除花花二代的信息并重新输出
+		//删除花花的信息并重新输出
 		for(Cat cat:set) {
-			if("花花二代".equals(cat.getName()))
-				set.remove(cat);
+			if("花花".equals(cat.getName()))
+				set.remove(cat);		//此时移除掉"花花"以后，set就被打算了，再遍历就会出问题
+				break;					//要解决这个问题，就要再找到以后break
 		}
 		
 		for(Cat cat:set) {
