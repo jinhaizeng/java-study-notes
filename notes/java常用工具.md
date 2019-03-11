@@ -1046,7 +1046,7 @@ public class RunnableTest {
 
 ## 2.线程的状态和生命周期
 * 线程的状态：新建（NEW）、可运行状态（Runnable）、正在运行（Running）、阻塞（Blocked）、终止（Dead）
-![线程状态之间的转换]()
+![线程状态之间的转换](https://github.com/jinhaizeng/java-study-notes/blob/master/%E5%9B%BE%E5%BA%8A/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.PNG?raw=true)
 ## 3.sleep方法应用
 sleep方法将正在运行状态转换为阻塞态，时间要求不精确的情况下使用时ok的
 * Thread类的方法`public static void sleep(long millis)`
@@ -1133,3 +1133,141 @@ synchronized(obj){......}
 * wait()方法：中断方法的执行，使线程等待
 * notify()方法：唤醒处于等待的某一个线程，使其结束等待
 * notifyAll()方法：唤醒所有处于等待的线程，使它们结束等待
+
+# 五、java输入输出流
+流就是指一连串流动的字符，以先进先出的方式发送信息的通道。
+在Java中，使用java.io.File类对文件进行操作
+## 1.创建file类对象 
+创建file类对象有四种方法,一下举两个例子
+* 第一种，直接给出文件的绝对路径，pathname文件的绝对路径
+```java
+File(String pathname)
+//举例
+File file = new File("c:\\imooc\\io\\score.txt");
+```
+* 第二种，(路径，子路径)的模式
+```java
+File(String parent, String child)
+//举例
+File file = new File("c:\\imooc","io\\score.txt");
+```
+* 第三种，文件，子路径
+```java
+File file = new File("c:\\imooc");
+File file = new File(file, "io\\score.txt");
+```
+
+## 2.创建文件
+### 2.1创建单级目录
+创建单级目录使用`mkdir()`方法
+```java
+	//创建单级目录
+		File file2 = new File("E:\\Knowledge System\\JAVA\\java study notes\\code\\FileProj\\io","set");
+		if(!file2.exists()) {
+			file2.mkdir();
+		}
+```
+### 2.2创建多级目录
+创建多级目录使用`mkdirs()`方法
+```java
+//创建目录
+		File file2 = new File("E:\\Knowledge System\\JAVA\\java study notes\\code\\FileProj\\io\\set\\HashSet");
+		if(!file2.exists()) {
+			file2.mkdirs();
+		}
+```
+
+## 3.字节流
+* 字节输入流`InputStream`	
+![字节输入流思维导图](等github上链接)
+* 字节输出流`OutputStream`
+![字节输出流思维导图](等github上链接)
+
+### 3.1FileInputStream
+*  从文件系统中的某个文件中获得输入字节
+* 用于读取诸如图像数据之类的原始字节流
+
+| 方法名 | 描述|
+| ----- | ----- |
+| public int read() | 从输入流中读取一个数据字节 |
+| public int read(byte[] b) | 从输入流中讲最多b.length个字节的数据读入一个byte数组中 |
+| public int read(byte[] b ,int off , int len) | 从输入流中将最多len个字节的数据读入byte数组中,off为偏移量即从第几个字节开始读的 |
+| public void close() | 关闭此文件输入流并释放与此流有关的所有系统资源（此点很重要，要防止虚拟机资源被持续占用） |
+注意上面的三个函数返回值为int，如果返回值为-1，则表示已经到达文件末尾 
+* 第一种read方法的使用
+```java
+//官方文档
+public int read()
+//举例
+package com.imooc.file;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException; 
+import java.io.IOException;
+
+public class FileInputDemo1 {
+
+	public static void main(String[] args) {
+		// 创建一个FileInputStream对象
+		try {
+			FileInputStream fis = new FileInputStream("imooc.txt");
+
+			int n = 0;
+			while((n = fis.read()) != -1) {
+				System.out.print((char)n);
+				
+			}
+			
+			fis.close();							//完成输入输出流操作的时候，一定要关闭输入输出以释放资源
+		} catch (FileNotFoundException e) {	
+			//FileNotFoundException是IOException是子类，如果IOException在前，FileNotFoundException将永远都执行不到
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}
+```
+* 第二种方法
+```java
+//官方文档示例
+public int read(byte[] b)
+//举例
+package com.imooc.file;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class FileInputDemo2 {
+
+	public static void main(String[] args) {
+		// 创建一个FileInputStream对象
+		try {
+			FileInputStream fis = new FileInputStream("imooc.txt");
+			byte[] b = new byte[100];
+			fis.read(b);							//将文件读取到字节数组中
+			System.out.println(new String(b));		//将字节数组转成字符串
+			fis.close(); // 完成输入输出流操作的时候，一定要关闭输入输出以释放资源
+		} catch (FileNotFoundException e) {
+			// FileNotFoundException是IOException是子类，如果IOException在前，FileNotFoundException将永远都执行不到
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}
+```
+
+* 第三种方法
+```java
+//官方示例文档
+public int read(byte[] b ,int off , int len)
+//举例与第二种方法差不多，故略
+```
