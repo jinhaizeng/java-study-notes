@@ -1179,9 +1179,9 @@ File file = new File(file, "io\\score.txt");
 
 ## 3.字节流
 * 字节输入流`InputStream`	
-![字节输入流思维导图](等github上链接)
+![字节输入流思维导图](https://github.com/jinhaizeng/java-study-notes/blob/master/%E5%9B%BE%E5%BA%8A/%E5%AD%97%E8%8A%82%E8%BE%93%E5%85%A5%E6%B5%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG?raw=true)
 * 字节输出流`OutputStream`
-![字节输出流思维导图](等github上链接)
+![字节输出流思维导图](https://github.com/jinhaizeng/java-study-notes/blob/master/%E5%9B%BE%E5%BA%8A/%E5%AD%97%E8%8A%82%E8%BE%93%E5%87%BA%E6%B5%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG?raw=true)
 
 ### 3.1FileInputStream
 *  从文件系统中的某个文件中获得输入字节
@@ -1193,7 +1193,7 @@ File file = new File(file, "io\\score.txt");
 | public int read(byte[] b) | 从输入流中讲最多b.length个字节的数据读入一个byte数组中 |
 | public int read(byte[] b ,int off , int len) | 从输入流中将最多len个字节的数据读入byte数组中,off为偏移量即从第几个字节开始读的 |
 | public void close() | 关闭此文件输入流并释放与此流有关的所有系统资源（此点很重要，要防止虚拟机资源被持续占用） |
-注意上面的三个函数返回值为int，如果返回值为-1，则表示已经到达文件末尾 
+注意上面的三个函数返回值为int，返回值为读取的字节数。如果返回值为-1，则表示已经到达文件末尾 
 * 第一种read方法的使用
 ```java
 //官方文档
@@ -1281,3 +1281,186 @@ public int read(byte[] b ,int off , int len)
 | public int write(byte[] b ,int off , int len) | 将指定byte数组中从偏移量off开始的len个字节写入此文件输出流 |
 | public void close() | 关闭此文件输入流并释放与此流有关的所有系统资源（此点很重要，要防止虚拟机资源被持续占用） |
 
+**默认情况下对源文件写入时覆盖式的，如果想非覆盖，应该使用一下的定义方法**
+```java
+FileOutputStream fos = new FileOutputStream("imooc.txt",true);
+```
+
+读写方法的代码示例
+```java
+package com.imooc.file;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class FileOuptDemo {
+
+	public static void main(String[] args) {
+		//创建输出文件流
+		FileOutputStream fos;
+		FileInputStream fis;
+		try {
+			fos = new FileOutputStream("imooc.txt",true);
+			fis = new FileInputStream("imooc.txt");
+			fos.write(50);
+			fos.write('a');
+			System.out.println(fis.read());
+			System.out.println((char)fis.read());
+			fos.close();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+```
+**此外，利用字节输入输出流实现文件的复制**
+文件拷贝的示例代码
+```java
+package com.imooc.file;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class FileOutputDemo1 {
+
+	public static void main(String[] args) {
+		// 文件拷贝
+		try {
+			FileInputStream fis = new FileInputStream("happy.jpg");
+			FileOutputStream fos = new FileOutputStream("happycopy.jpg");
+			
+			int n = 0;
+			byte[] b = new byte[1024];
+			while((n = fis.read(b)) != -1)			//注意，文件较大，所以是一段一段的读入再写入的
+				fos.write(b);						//在写满1024个byte以后判断是不是为空，非空则继续写
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
+
+}
+```
+
+## 4.缓冲流（字节流的子类）
+以前的读写都是对硬盘的操作，但是缓冲流是对内存的操作，所以使用缓冲流可以有效的提高输入输出速度
+* 缓冲输入流BufferedInputStream（是文件输入流FileInputStream的子类)
+* 缓冲输出流BufferedInputStream（是文件输出流FileOuptputStream的子类）
+要实现从缓冲区将文件写入指定地点，当缓冲区满了，会自动执行写操作；当缓冲区不满，要通过`flush()`（close方法也可以实现缓冲区的强制清空），强制清空缓冲区，借此来实现写文件
+
+缓冲输入输出流的创建示例代码
+```java
+package com.imooc.file;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class BufferedDemo {
+
+	public static void main(String[] args) {
+		// 创建缓冲输入输出流
+		try {
+			FileOutputStream fos = new FileOutputStream("imooc.txt");
+			//BufferedOutputStream是FileOutputStream的子类所以要实现bos的创建应用fos来创建
+			BufferedOutputStream bos = new BufferedOutputStream(fos);	
+			
+			FileInputStream fis = new FileInputStream("imooc.txt");
+			//创建缓冲输入流也同理
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			
+			bos.write(50);
+			bos.write('a');
+			bos.flush();
+			System.out.println(bis.read());
+			System.out.println((char)bis.read());
+			
+			bos.close();
+			bis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
+
+}
+```
+## 6.字符流
+* 字符输入流Reader![字符输入流思维导图](https://github.com/jinhaizeng/java-study-notes/blob/master/%E5%9B%BE%E5%BA%8A/%E5%AD%97%E7%AC%A6%E8%BE%93%E5%85%A5%E6%B5%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG?raw=true)
+* 字符输出流Writer![字符输出流思维导图](https://github.com/jinhaizeng/java-study-notes/blob/master/%E5%9B%BE%E5%BA%8A/%E5%AD%97%E7%AC%A6%E8%BE%93%E5%87%BA%E6%B5%81%E5%AF%BC%E5%9B%BE.PNG?raw=true)
+
+**字节输入输出流和字符输入输出流的区别**
+* 字节输入输出流主要用于读写数据都必须是二进制格式的数据
+* 
+
+### 6.1字节字符转换流
+* InputStreamReader
+* OutputStreamWriter
+```java
+package com.imooc.file;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class ReaderDemo {
+
+	public static void main(String[] args) {
+		// 用于实现字节流转字符流，这样直接输出字符数据
+
+		try {
+			FileInputStream fis = new FileInputStream("imooc.txt");
+			// 建立字节流和字符流的关联
+			InputStreamReader isr = new InputStreamReader(fis);
+
+			int n = 0;
+			char[] cbuf = new char[10];
+			
+			//方法一：此时n为字节楼读到的数据
+			while((n = isr.read()) != -1) {
+				System.out.print((char)n);
+			}
+			//方法二：此时n为实际读到的字节数
+			while ((n = isr.read(cbuf)) != -1) {
+				String s = new String(cbuf,0,n); 	//将字节数组转换为字符串
+				System.out.print(s);
+			}
+			
+			fis.close();
+			isr.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}
+```

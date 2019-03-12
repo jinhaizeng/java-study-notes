@@ -17,6 +17,8 @@ public class FileOutputDemo1 {
 			byte[] b = new byte[1024];
 			while((n = fis.read(b)) != -1)			//注意，文件较大，所以是一段一段的读入再写入的
 				fos.write(b);						//在写满1024个byte以后判断是不是为空，非空则继续写
+			fos.close();
+			fis.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
