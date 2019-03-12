@@ -1210,7 +1210,7 @@ public class FileInputDemo1 {
 	public static void main(String[] args) {
 		// 创建一个FileInputStream对象
 		try {
-			FileInputStream fis = new FileInputStream("imooc.txt");
+			FileInputStream fis = new FileInputStream("imooc.txt");		//这种直接写文件名，相当于在工程目录下找该文件
 
 			int n = 0;
 			while((n = fis.read()) != -1) {
@@ -1271,3 +1271,13 @@ public class FileInputDemo2 {
 public int read(byte[] b ,int off , int len)
 //举例与第二种方法差不多，故略
 ```
+
+### 3.2FileOutputStream
+
+| 方法名 | 描述|
+| ----- | ----- |
+| public int write(int b) | 将制定字节写入此文件输出流 |
+| public int wirte(byte[] b) | 将b.length个字节从指定byte数组写入此文件输出流中 |
+| public int write(byte[] b ,int off , int len) | 将指定byte数组中从偏移量off开始的len个字节写入此文件输出流 |
+| public void close() | 关闭此文件输入流并释放与此流有关的所有系统资源（此点很重要，要防止虚拟机资源被持续占用） |
+
