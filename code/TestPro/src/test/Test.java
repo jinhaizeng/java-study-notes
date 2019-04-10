@@ -10,6 +10,7 @@ public class Test {
 //		String a = "hello world!";
 //		System.out.println(a);
 		
+		
 		int[] temp = new int[10];
 		System.out.println(temp);
 		for(int n:temp) {
