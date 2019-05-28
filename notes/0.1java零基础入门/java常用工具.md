@@ -16,7 +16,7 @@
 
 java规定
 * 对于可查异常必须捕捉或者声明抛出
-* 允许忽略不可查的Runtime（含子类）和Erro（含子类）
+* 允许忽略不可查的Runtime（含子类）和Error（含子类）
 
 抛出异常和捕获异常通过五个关键字来实现：try、catch、finally、throw、throws  
 * 捕获异常

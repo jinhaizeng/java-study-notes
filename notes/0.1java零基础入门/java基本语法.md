@@ -63,7 +63,7 @@ float f = 1.23E5f;      //最后的f表示的是float类型
 
 * 基本数据类型变量的存储  
 按照作用范围分为：类级、对象实例级、方法级（局部变量）、块级  
-局部变量定义在栈中  
+局部变量定义在中  
 ##### 2.4.3java中unicode和ascall码的编码方式    
 自行百度（大体上unicode是中文语法，ascall码是英文编码    
 #### 2.5 类型转换   
@@ -118,7 +118,7 @@ while循环和C语言一样，continue、break也一样，不记得话去google
 * 数组元素的引用    
 数组名[下标]，与C语言相同   
 * 数组的长度    
-属性length表示数组的长度，如：arr.length    
+属性length表示的长度，如：arr.length    
 
 
 ### 6 增强型for循环，又叫foreach循环    
