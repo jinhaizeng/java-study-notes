@@ -2,6 +2,7 @@
 
 上班随手附链接，回家有时间记得重建个仓库
 [动态链接库的常用函数](https://blog.csdn.net/qq_22122811/article/details/52590182)
+[lock](https://blog.csdn.net/y396397735/article/details/81024755)
 
 此部分内容不全，详情还是见notes文件夹内的文件
 
